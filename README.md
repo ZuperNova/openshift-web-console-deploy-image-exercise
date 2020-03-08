@@ -26,16 +26,20 @@ Quickly review the source for the NodeJS app we are deploying at:
 1.  Create an app from an image:
   1. Choose `Container Image`
   1. Enter `svejkciber/nodejs-helloworld:00ce99e2badb634a700862bc97963a8d28032f46` as `Image Name`
-  1. Enter a name and application name, e,g. `hello`. 
+  1. Enter a name and application name, e,g. `hello`.
+  1. Ignore the warning about `Image runs as root`. More on how to fix this issue in a later lab...
   1. Hit `Create`.
-1. Inspect the resource created in Openshift: Left-click on the node in the topology. From there, you should see the following resources:
-  * A DeploymentConfig
-  * A Service
-  * A Route
-  * A Pod
- 
+1. Inspect the resource created in Openshift: Left-click on the node in the topology. From there, you should see the following
+   resources:
+   * A DeploymentConfig
+   * A Service
+   * A Route
+   * A ReplicationController: it seems that you have to use `Advanced | Search` to find it.
+   * A Pod
+   * No Builds or BuildConfigs, since this is a pure dpeloyment.
+   
  ### Inspect logs and correct the deployment error
- The deployed fails to start up. 
+ The deployed pod fails to start up. 
  
  1. Select the failing pod from the deployment config view and inspect its log. Choose the tab `Logs`
     It should show an error like:
@@ -56,10 +60,20 @@ WORLD_STATE is not set in the process environment.
      1. Verify by checking that 
        * a new replication controller was created recently.
        * a new pod was started successfully
-   1. Check that there are no errors in the application log.
+   1. Check that there are no errors in the application log. The application log should now show:
+   ```
+   Server running at http://0.0.0.0:3000/
+   ```
+   1. Why did an automatic redeploy start? _Hint_: Look at the `Triggers` section in the `Deployment Config Overview`.
    
 1. Test the application
+   Open the application's route in the web browser (or curl) by clicking on the URL added on the topology diagram, or from the
+   `Routes` section of the `Resources` tab of the deployment configuration. 
 
 ### Bonus exercises
 If time permits, the following variations can be useful:
 1. Create a S2I build from the git repo of the NodeJS app (build it yourself with Openshift)
+2. Fork the git repo, replace the pipeline credentials for deploying to DockerHub with your own, 
+   repeat the exercise your forked repo. Trigger another build (just commit anything) and 
+   publishment of your Docker image. Verify that the trigger `ImageChange` works as expected 
+   in the deployment configuration of the Openshift project.  
