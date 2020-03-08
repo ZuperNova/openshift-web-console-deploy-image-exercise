@@ -11,8 +11,10 @@ An exercise in deploying a prebuilt Docker image to Openshift 4, using its web c
 ## Steps
 
 ### Background
-Quickly review the source for the NodeJS app we are deploying at: 
-  https://github.com/svejk-ciber/nodejs-helloworld (you dont need to clone the repo). Notice how the Github Actions pipeline builds and publishes a Docker image from the NodeJS source.
+Quickly review the source for the NodeJS app we are deploying at:   
+  https://github.com/svejk-ciber/nodejs-helloworld  
+(you dont need to clone the repo). 
+Notice how the Github Actions pipeline builds and publishes a Docker image from the NodeJS source.
 
 ### Setup
 
@@ -41,34 +43,36 @@ Quickly review the source for the NodeJS app we are deploying at:
  ### Inspect logs and correct the deployment error
  The deployed pod fails to start up. 
  
- 1. Select the failing pod from the deployment config view and inspect its log. Choose the tab `Logs`
-    It should show an error like:
-    ```
-    /usr/src/app/app.js:6
-  throw "WORLD_STATE is not set in the process environment.";  
-  ^
-WORLD_STATE is not set in the process environment.
-(Use `node --trace-uncaught ...` to show where the exception was thrown)
-    ``` 
- 
- 1. Fix the error and redeploy
+1. Select the failing pod from the deployment config view and inspect its log. Choose the tab `Logs`
+   It should show an error like:
+   ```
+   /usr/src/app/app.js:6
+      throw "WORLD_STATE is not set in the process environment.";  
+      ^
+      WORLD_STATE is not set in the process environment.
+   (Use `node --trace-uncaught ...` to show where the exception was thrown)
+   ```
+1. Fix the error and redeploy
    1. Go back to the deployment configuration and set the missing environment variable
      1. Choose the tab `Environment`
-     1. Add the environment variable as a `Single Value`. The name of the variable must match the above error message, the value can be any string.
+     1. Add the environment variable as a `Single Value`. 
+        The name of the variable must match the above error message, the value can be any string.
      1. Save the configuration change with the button on the bottom of the page.
    1. Go back to the deployment configuration and observe that an automatic redeploy started (and probably finished).
      1. Verify by checking that 
        * a new replication controller was created recently.
        * a new pod was started successfully
    1. Check that there are no errors in the application log. The application log should now show:
-   ```
-   Server running at http://0.0.0.0:3000/
-   ```
-   1. Why did an automatic redeploy start? _Hint_: Look at the `Triggers` section in the `Deployment Config Overview`.
+      ```
+      Server running at http://0.0.0.0:3000/
+      ```
+   1. Why did an automatic redeploy start? 
+      _Hint_: Look at the `Triggers` section in the `Deployment Config Overview`.
    
 1. Test the application
    Open the application's route in the web browser (or curl) by clicking on the URL added on the topology diagram, or from the
    `Routes` section of the `Resources` tab of the deployment configuration. 
+   Verify that that the app shows a greeting.
 
 ### Bonus exercises
 If time permits, the following variations can be useful:
