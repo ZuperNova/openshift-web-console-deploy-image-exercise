@@ -5,13 +5,14 @@ An exercise in deploying a prebuilt Docker image to Openshift 4, using its web c
 * Introduce Openshift's web console
 * Deploy an app from a prebuilt Docker image
 * Check status and logs in the web console
+* Set an environment variable in a deployment configuration
 * Learn basic troubleshooting of a failed deployment
 
 
 ## Steps
 
 ### Background
-Quickly review the source for the NodeJS app we are deploying at:   
+Briefly review the source for the NodeJS app we are deploying at:   
   https://github.com/svejk-ciber/nodejs-helloworld  
 (you dont need to clone the repo). 
 Notice how the Github Actions pipeline builds and publishes a Docker image from the NodeJS source.
@@ -59,14 +60,14 @@ Notice how the Github Actions pipeline builds and publishes a Docker image from 
         The name of the variable must match the above error message, the value can be any string.
      1. Save the configuration change with the button on the bottom of the page.
    1. Go back to the deployment configuration and observe that an automatic redeploy started (and probably finished).
-     1. Verify by checking that 
-       * a new replication controller was created recently.
-       * a new pod was started successfully
+     1. Verify by checking that
+        * a new replication controller was created recently
+        * a new pod was started successfully
    1. Check that there are no errors in the application log. The application log should now show:
       ```
       Server running at http://0.0.0.0:3000/
       ```
-   1. Why did an automatic redeploy start? 
+   1. Why did an automatic redeploy start?      
       _Hint_: Look at the `Triggers` section in the `Deployment Config Overview`.
    
 1. Test the application
